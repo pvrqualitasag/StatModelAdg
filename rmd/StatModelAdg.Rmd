@@ -1,0 +1,29 @@
+---
+title: "Statistical Model for Average Daily Weight Gain"
+author: "Peter von Rohr"
+date: "3 Mai 2017"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Disclaimer
+This document lists a few facts and points to resources related to problems in statistical modelling of a trait called average daily gain (ADG).
+
+
+## Definitions and Terminology
+The trait average daily gain (ADG) for a given animal $i$ is defined as 
+
+\begin{equation}
+y_i = \frac{w_i - b_i}{t_i}
+\label{eq:AdgDef}
+\end{equation}
+
+\begin{tabular}{lll}
+where  &  &\\
+
+\end{tabular}
+
+ 
