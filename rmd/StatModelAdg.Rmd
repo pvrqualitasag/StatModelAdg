@@ -1,6 +1,6 @@
 ---
-title: "Statistical Model for Average Daily Weight Gain"
-author: "Peter von Rohr"
+title: "Statistical Modelling of Average Daily Weight Gain"
+author: "Sophie Kunz and Peter von Rohr"
 date: "3 Mai 2017"
 output: pdf_document
 ---
@@ -17,13 +17,65 @@ This document lists a few facts and points to resources related to problems in s
 The trait average daily gain (ADG) for a given animal $i$ is defined as 
 
 \begin{equation}
-y_i = \frac{w_i - b_i}{t_i}
+y_i = \frac{w_{i,t_i} - w_{i,0}}{t_i} = \frac{\Delta w}{t_i}
 \label{eq:AdgDef}
 \end{equation}
 
 \begin{tabular}{lll}
 where  &  &\\
-
+       &  $y_i$         &  observed value of ADG for animal $i$\\
+       &  $w_{i,t_i}$   &  weight of animal $i$ at age $t_i$\\
+       &  $w_{i,0}$     &  weight of animal $i$ at time $t=0$, i.e. at birth\\
+       &  $t_i$         &  age of animal $i$\\
+       &  $\Delta w$    &  difference between $w_{i,t_i}$ and $w_{i,0}$
 \end{tabular}
+
+
+## Statistical Model
+The currently used statistical model for variance components estimation and prediction of breeding values is a linear mixed effects model, such as shown below
+
+\begin{equation}
+y_i = \mu + hjs_{ijkl} + \beta_1 * t_i + \beta_2 * t_i^2 + a_i + e_i
+\label{eq:StatModelAdg}
+\end{equation}
+
+\begin{tabular}{lll}
+where  &  &  \\
+       &  $y_i$         &  observed value of ADG for animal $i$\\
+       &  $\mu$         &  intercept\\
+       &  $hjs_{ijkl}$  &  fixed herd-year-season effect\\
+       &  $t_i$         &  age of animal $i$ as covariate\\
+       &  $\beta_1$     &  regression coefficient of linear age term\\
+       &  $\beta_2$     &  regression coefficient of quadratic age term\\
+       &  $a_i$         &  breeding value of animal $i$ as random effect\\
+       &  $e_i$         &  random error term
+\end{tabular}
+
+Using the definition of $y_i$ from equation (\ref{eq:AdgDef}) and inserting that into the model in (\ref{eq:StatModelAdg}), we get
+
+\begin{equation}
+ \frac{\Delta w}{t_i} =  \mu + hjs_{ijkl} + \beta_1 * t_i + \beta_2 * t_i^2 + a_i + e_i
+\label{eq:StatModelAdgRepl}
+\end{equation}
+
+
+## Role of Age
+In equation (\ref{eq:StatModelAdgRepl}), the age $t_i$ of animal $i$ shows up on both sides. Therefore the meaning of $t_i$ is not quite clear. On the left-hand side of (\ref{eq:StatModelAdgRepl}) the age $t_i$ is part of the __response__ variable. On the right-hand side the age $t_i$ has to be taken as a __covariate__. 
+
+In a frequentist setting the dual nature of $t_i$ poses the problem that when taking the age as a part of the response variable, it is automatically a random variable with a certain probability distribution. That distribution is usually characterized by expected values and covariance matrix. Covariates on the other hand are just fixed observed values that can be assigned to each observation. In a Bayesian setting this problem does not exist, because all model components are taken as random variables. 
+
+
+## Re-arranging the Terms in the Model
+At the moment, we are ignoring the duality of the age term in the statistical model and are taking (\ref{eq:StatModelAdgRepl}) just as an equation. In that equation, we are re-arranging the terms. 
+
+\begin{align}
+\Delta w &=  t_i * \left[\mu + hjs_{ijkl} + \beta_1 * t_i + \beta_2 * t_i^2 + a_i + e_i\right]\nonumber\\
+         &= t_i * \mu + t_i * hjs_{ijkl} + \beta_1 * t_i^2 + \beta_2 * t_i^3 + t_i * a_i + t_i * e_i
+\label{eq:StatModelAdgRearrange}
+\end{align}
+
+The result in (\ref{eq:StatModelAdgRearrange}) is no longer a linear model, because the response variable is no longer a linear function of the parameters. Equation (\ref{eq:StatModelAdgRearrange}) is a __multiplicative__ model. Hence when modelling average daily gain in a linear model with age as covariate is really a multiplicative model of $\delta w$. 
+
+When looking at the random components in (\ref{eq:StatModelAdgRearrange}), the original assumption of the distribution of the genetic component (breeding value) and the error term have changed. 
 
  
